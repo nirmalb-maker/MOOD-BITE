@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoodBite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">MOODBITE</div>
+</nav>
+
+<div class="main-wrapper">
+
+    <div class="hero-text">
+        <h1><span>MOOD</span>BITE</h1>
+        <p>Smart Food Recommendation Based on Your Mood</p>
+    </div>
+
+    <form action="/recommend" method="POST" class="form-container">
+
+        <div class="section">
+            <h3>Taste</h3>
+            <div class="option-group">
+                <label class="option">
+                    <input type="radio" name="taste" value="spicy" required>
+                    Spicy
+                </label>
+                <label class="option">
+                    <input type="radio" name="taste" value="sweet">
+                    Sweet
+                </label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Budget</h3>
+            <select name="budget" required>
+                <option value="">Select Budget</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <h3>Meal Type</h3>
+            <div class="option-group">
+                <label class="option">
+                    <input type="radio" name="meal_type" value="snack" required>
+                    Snack
+                </label>
+                <label class="option">
+                    <input type="radio" name="meal_type" value="heavy">
+                    Heavy
+                </label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Company</h3>
+            <div class="option-group">
+                <label class="option">
+                    <input type="radio" name="company" value="group" required>
+                    Group
+                </label>
+                <label class="option">
+                    <input type="radio" name="company" value="alone">
+                    Alone
+                </label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Diet</h3>
+            <div class="option-group">
+                <label class="option">
+                    <input type="radio" name="diet" value="healthy" required>
+                    Healthy
+                </label>
+                <label class="option">
+                    <input type="radio" name="diet" value="junk">
+                    Junk
+                </label>
+            </div>
+        </div>
+
+        <button type="submit">Find My Perfect Dish</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
