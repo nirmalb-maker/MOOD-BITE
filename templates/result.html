@@ -17,8 +17,23 @@
 
     <p class="rating">⭐ 4.6 Customer Rating</p>
 
+    <!-- AI MODE BUTTON -->
+    <form action="/ai_mode" method="POST">
+        <input type="hidden" name="dish" value="{{ dish }}">
+        <input type="hidden" name="restaurant" value="{{ restaurant }}">
+        <input type="hidden" name="price" value="{{ price }}">
+        <button type="submit" style="margin-top:15px;">🤖 Ask AI Why This?</button>
+    </form>
+
+    {% if ai_response %}
+    <div style="margin-top:20px; padding:15px; background:#f4f6fb; border-radius:10px; text-align:left;">
+        <strong>AI Insight:</strong>
+        <p>{{ ai_response }}</p>
+    </div>
+    {% endif %}
+
     <form action="/">
-        <button>Search Again</button>
+        <button style="margin-top:15px;">Search Again</button>
     </form>
 
 </div>
