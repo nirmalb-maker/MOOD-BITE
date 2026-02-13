@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare Restaurants - MoodBite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="compare-body">
+
+<div class="compare-wrapper">
+
+    <h1>Best Options For You</h1>
+    <h2>{{ dish.replace("_", " ").title() }}</h2>
+
+    <div class="hotel-grid">
+
+        <!-- Best Option -->
+        <div class="hotel-card best">
+            <img src="https://source.unsplash.com/400x250/?food,restaurant">
+
+            <div class="hotel-content">
+                <h3>{{ restaurant.replace("_", " ").title() }}</h3>
+                <p class="rating">⭐ 4.5 Rating</p>
+                <p>Platform: Swiggy</p>
+                <p class="price">₹{{ swiggy }}</p>
+
+                <div class="menu-preview">
+                    <p><strong>Menu Highlights:</strong></p>
+                    <ul>
+                        <li>{{ dish.replace("_", " ").title() }}</li>
+                        <li>Chef Special Combo</li>
+                        <li>Signature Dessert</li>
+                    </ul>
+                </div>
+
+                <p class="badge">🔥 Best Price</p>
+            </div>
+        </div>
+
+        <!-- Second Option -->
+        <div class="hotel-card">
+            <img src="https://source.unsplash.com/400x250/?hotel,dining">
+
+            <div class="hotel-content">
+                <h3>Premium Dining Hub</h3>
+                <p class="rating">⭐ 4.3 Rating</p>
+                <p>Platform: Zomato</p>
+                <p class="price">₹{{ zomato }}</p>
+
+                <div class="menu-preview">
+                    <p><strong>Menu Highlights:</strong></p>
+                    <ul>
+                        <li>{{ dish.replace("_", " ").title() }}</li>
+                        <li>Family Combo Pack</li>
+                        <li>Weekend Offer Meal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <form action="/final" method="POST">
+        <input type="hidden" name="dish" value="{{ dish }}">
+        <input type="hidden" name="restaurant" value="{{ restaurant }}">
+        <input type="hidden" name="price" value="{{ base_price }}">
+        <button class="continue-btn">Continue to Final Recommendation</button>
+    </form>
+
+</div>
+
+</body>
+</html>

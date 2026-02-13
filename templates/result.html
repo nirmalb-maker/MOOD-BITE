@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result - MoodBite</title>
+    <title>Final Recommendation - MoodBite</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body class="result-body">
 
 <div class="result-card">
 
     <h2>Recommended Dish</h2>
-    <h1>{{ dish }}</h1>
+    <h1>{{ dish.replace("_", " ").title() }}</h1>
 
-    <p>Restaurant: <b>{{ restaurant }}</b></p>
-    <p>Price: ₹{{ price }}</p>
+    <p>🍴 Restaurant: <strong>{{ restaurant.replace("_", " ").title() }}</strong></p>
+    <p>💰 Price: ₹{{ price }}</p>
 
-    <p class="rating">⭐ 4.5 Rating</p>
+    <p class="rating">⭐ 4.6 Customer Rating</p>
 
-    <a href="/" class="back-btn">Search Again</a>
+    <form action="/">
+        <button>Search Again</button>
+    </form>
 
 </div>
 
