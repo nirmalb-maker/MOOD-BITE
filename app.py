@@ -1,44 +1,49 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pickle
 import pandas as pd
 from google import genai
-from google.genai import types
 from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
 
-# Load environment variables
+# ==============================
+# LOAD ENV + GEMINI
+# ==============================
+
 load_dotenv()
-
-# Configure Gemini API
 api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
-    raise ValueError("GEMINI_API_KEY not found in environment variables")
 
-# Initialize the client
+if not api_key:
+    raise ValueError("GEMINI_API_KEY not found in .env file")
+
 client = genai.Client(api_key=api_key)
 
-# Load ML model + encoders
-try:
-    model = pickle.load(open("model.pkl", "rb"))
-    encoders = pickle.load(open("encoders.pkl", "rb"))
-    data = pd.read_csv("data.csv")
-except FileNotFoundError as e:
-    raise FileNotFoundError(f"Required file not found: {e}")
+# ==============================
+# LOAD ML MODEL
+# ==============================
 
+model = pickle.load(open("model.pkl", "rb"))
+encoders = pickle.load(open("encoders.pkl", "rb"))
+data = pd.read_csv("data.csv")
+
+
+# ==============================
+# HOME PAGE
+# ==============================
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ---------------------------
-# ML Prediction + Compare Page
-# ---------------------------
+# ==============================
+# ML PREDICTION → COMPARE PAGE
+# ==============================
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
+
     try:
         taste = request.form.get("taste")
         budget = request.form.get("budget")
@@ -46,11 +51,7 @@ def recommend():
         company = request.form.get("company")
         diet = request.form.get("diet")
 
-        # Validate inputs
-        if not all([taste, budget, meal_type, company, diet]):
-            return "Error: All fields are required", 400
-
-        # Encode inputs
+        # Encode input
         encoded_input = [
             encoders["taste"].transform([taste])[0],
             encoders["budget"].transform([budget])[0],
@@ -59,20 +60,14 @@ def recommend():
             encoders["diet"].transform([diet])[0]
         ]
 
-        # Predict
+        # Predict dish
         prediction = model.predict([encoded_input])[0]
-        
-        # Get result from data
-        result_rows = data[data["dish"] == prediction]
-        if result_rows.empty:
-            return f"Error: Predicted dish '{prediction}' not found in database", 404
-            
-        result_row = result_rows.iloc[0]
+        result_row = data[data["dish"] == prediction].iloc[0]
 
         restaurant = result_row["restaurant"]
         base_price = int(result_row["price"])
 
-        # Calculate delivery prices
+        # Simulated delivery comparison
         zomato_price = base_price + 20
         swiggy_price = base_price + 10
 
@@ -85,21 +80,20 @@ def recommend():
             swiggy=swiggy_price
         )
 
-    except KeyError as e:
-        return f"Error: Missing encoder or column - {e}", 500
     except Exception as e:
-        return f"Error: {str(e)}", 500
+        return f"Error in recommendation: {str(e)}"
 
 
-# ---------------------------
-# Final Result Page
-# ---------------------------
+# ==============================
+# FINAL PAGE (After Compare)
+# ==============================
 
 @app.route("/final", methods=["POST"])
 def final():
-    dish = request.form.get("dish", "Unknown")
-    restaurant = request.form.get("restaurant", "Unknown")
-    price = request.form.get("price", "0")
+
+    dish = request.form.get("dish")
+    restaurant = request.form.get("restaurant")
+    price = request.form.get("price")
 
     return render_template(
         "result.html",
@@ -110,57 +104,46 @@ def final():
     )
 
 
-# ---------------------------
-# AI MODE (Gemini)
-# ---------------------------
+# ==============================
+# AI CHATBOT MODE (Landing Page)
+# ==============================
 
-@app.route("/ai_mode", methods=["POST"])
-def ai_mode():
-    try:
-        dish = request.form.get("dish", "Unknown")
-        restaurant = request.form.get("restaurant", "Unknown")
-        price = request.form.get("price", "0")
+@app.route("/chat_ai", methods=["POST"])
+def chat_ai():
 
-        prompt = f"""
-A user selected this dish recommendation:
+    user_text = request.form.get("user_text")
 
-Dish: {dish}
-Restaurant: {restaurant}
-Price: ₹{price}
+    if not user_text:
+        return jsonify({"response": "Please describe your food preferences."})
 
-Explain why this dish suits their mood and preferences.
-Make it friendly, personalized, and slightly premium tone.
-Also suggest one small add-on recommendation.
+    prompt = f"""
+User request:
+"{user_text}"
+
+Based on this description:
+- Recommend a dish
+- Suggest restaurant type
+- Explain why it suits them
+
 Keep it under 150 words.
 """
 
-        # Use the new API with correct model name
+    try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model="gemini-2.5-flash",
             contents=prompt
         )
-        
-        ai_text = response.text
-        print("AI Response:", ai_text)
 
-        return render_template(
-            "result.html",
-            dish=dish,
-            restaurant=restaurant,
-            price=price,
-            ai_response=ai_text
-        )
+        ai_text = response.text
+        return jsonify({"response": ai_text})
 
     except Exception as e:
-        print(f"AI Mode Error: {str(e)}")
-        return render_template(
-            "result.html",
-            dish=request.form.get("dish", "Unknown"),
-            restaurant=request.form.get("restaurant", "Unknown"),
-            price=request.form.get("price", "0"),
-            ai_response=f"AI service temporarily unavailable. Error: {str(e)}"
-        )
+        return jsonify({"response": f"AI Error: {str(e)}"})
 
+
+# ==============================
+# RUN APP
+# ==============================
 
 if __name__ == "__main__":
     app.run(debug=True)

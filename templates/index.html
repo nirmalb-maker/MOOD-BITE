@@ -95,7 +95,80 @@
 
     </form>
 
+    <!-- ================= AI MODE SECTION ================= -->
+
+    <div style="text-align:center; margin-top:25px;">
+        <button type="button" onclick="toggleAI()"
+            style="padding:10px 20px; background:#2c3e50; color:white; border:none; border-radius:6px;">
+            🤖 Switch to AI Mode
+        </button>
+    </div>
+
+    <div id="ai-panel" style="display:none; margin-top:20px; background:#f4f6fb; padding:20px; border-radius:10px; width:600px; box-shadow:0 15px 30px rgba(0,0,0,0.08);">
+
+        <textarea id="ai-input" 
+            placeholder="Describe your mood, cravings, dietary constraints, budget, preferences..."
+            style="width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; min-height:100px;"></textarea>
+
+        <div style="margin-top:10px;">
+            <button onclick="sendAI()"
+                style="padding:8px 15px; background:#2c3e50; color:white; border:none; border-radius:6px;">
+                Ask AI
+            </button>
+
+            <button onclick="startVoice()"
+                style="padding:8px 15px; margin-left:10px;">
+                🎤 Voice
+            </button>
+        </div>
+
+        <div id="ai-response" style="margin-top:15px; text-align:left;"></div>
+    </div>
+
 </div>
 
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function toggleAI() {
+    var panel = document.getElementById("ai-panel");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+}
+
+function sendAI() {
+    let text = document.getElementById("ai-input").value;
+
+    fetch("/chat_ai", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "user_text=" + encodeURIComponent(text)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("ai-response").innerHTML =
+            "<strong>AI Recommendation:</strong><br><br>" + data.response;
+    });
+}
+
+function startVoice() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Voice recognition not supported in this browser.");
+        return;
+    }
+
+    var recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        document.getElementById("ai-input").value =
+            event.results[0][0].transcript;
+    };
+}
+
+</script>
+
 </body>
-</html>
+<
+
