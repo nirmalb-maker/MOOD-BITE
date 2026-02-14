@@ -1,211 +1,127 @@
-# MoodBite  
-## Intelligent Food Recommendation System  
+<p align="center">
+  <img src="./img.png" alt="MoodBite Banner" width="100%">
+</p>
+
+# MoodBite 🍽️🎯  
+## Intelligent ML-Based Food Recommendation System  
 
 ---
 
-# PART I — SYSTEM OVERVIEW & ARCHITECTURE
+## 📌 Basic Details
+
+### 👥 Team Name  
+**Delulu**
+
+### 👤 Team Members
+- Nirmal B Chacko – RIT KOTTAYAM  
+- Jolsina U – RIT KOTTAYAM
 
 ---
 
-## 1. Introduction
-
-MoodBite is a web-based food recommendation system designed to generate structured and deterministic dish suggestions based on user preferences.
-
-The system is primarily powered by a supervised Machine Learning model (Decision Tree Classifier). An optional AI layer is integrated to provide contextual explanation and conversational interaction, but the core recommendation logic remains ML-driven and explainable.
-
-This project demonstrates:
-
-- Practical ML model deployment in a web application
-- Clear separation between structured ML logic and optional AI assistance
-- Modular backend architecture
-- Deterministic recommendation behavior
+### 🌐 Hosted Project Link  
+🔗 https://mood-bite.onrender.com  
 
 ---
 
-## 2. System Objective
+## 🧠 Project Description  
 
-Food recommendation systems typically rely on:
+MoodBite is a structured Machine Learning–driven food recommendation system that generates deterministic dish suggestions based on user preferences such as taste, budget, meal type, company, and diet.
 
-- Static rule-based filtering  
-or  
-- Heavy generative AI without structured logic  
-
-MoodBite combines structured ML classification with optional AI reasoning, ensuring:
-
-- Predictable output  
-- Explainable model behavior  
-- Minimal dependency on generative systems  
-- Clean architectural separation  
+The system is powered by a **Decision Tree Classifier** and optionally enhanced with an AI insight layer for conversational interaction — while keeping ML logic as the core engine.
 
 ---
 
-## 3. Core Functional Modules
+## ❓ The Problem Statement  
 
-### 3.1 Structured ML Recommendation Engine (Primary System)
+Food recommendation platforms typically rely on:
 
-Users provide structured inputs:
+- Static rule-based filtering (limited intelligence)  
+OR  
+- Fully generative AI systems (non-deterministic & non-explainable)
 
-- Taste (Spicy / Sweet)
-- Budget (Low / Medium / High)
-- Meal Type (Snack / Heavy)
-- Company (Alone / Group)
-- Diet (Healthy / Junk)
-
-The system:
-
-1. Encodes categorical inputs
-2. Passes them to a trained `DecisionTreeClassifier`
-3. Predicts a suitable dish
-4. Retrieves associated restaurant and pricing data
-
-This ensures deterministic and explainable recommendations.
+Users receive unpredictable suggestions without structured reasoning.
 
 ---
 
-### 3.2 Restaurant Comparison Module
+## ✅ The Solution  
 
-After prediction, the system displays:
+MoodBite combines:
 
-- Recommended dish
-- Restaurant details
-- Simulated pricing comparison (Swiggy vs Zomato)
-- Highlighted best option
+- Supervised ML (DecisionTreeClassifier)
+- Encoded categorical input processing
+- Deterministic prediction logic
+- Structured restaurant lookup
+- Simulated price comparison
+- Optional conversational AI enhancement
 
-This simulates real-world decision-making context without relying on external APIs.
+This ensures:
 
----
-
-### 3.3 Optional AI Insight Layer
-
-An additional AI mode allows users to:
-
-- Enter free-text food preferences
-- Use voice input (browser-supported)
-- Receive contextual explanation or alternative suggestions
-
-Important:
-
-AI does not replace ML prediction.  
-It serves only as an assistive layer to enhance user experience.
+✔ Predictable Output  
+✔ Explainable ML Logic  
+✔ Clean Modular Architecture  
+✔ Controlled AI Usage  
 
 ---
 
-## 4. System Architecture
+# ⚙ Technical Details
 
-Application flow:
+## 💻 Technologies Used
 
-Frontend (HTML/CSS/JS)  
-        ↓  
-Flask Backend  
-        ↓  
-Machine Learning Model (Decision Tree)  
-        ↓  
-Dataset Lookup Layer  
-        ↓  
-Optional AI Insight Layer  
-
-Design Principles:
-
-- ML-first architecture  
-- AI as enhancement, not replacement  
-- Modular Flask routes  
-- Clean separation of concerns  
-- Minimal external dependency  
-
----
-
-## 5. Technology Stack
-
-Backend:
+### 🔹 Languages
 - Python
-- Flask
-
-Machine Learning:
-- Scikit-learn
-- Pandas
-- LabelEncoder
-
-Frontend:
 - HTML
 - CSS
 - JavaScript
 
-Optional AI Layer:
+### 🔹 Framework
+- Flask
+
+### 🔹 Libraries
+- Scikit-learn
+- Pandas
+- LabelEncoder
+- Pickle
+- python-dotenv
+
+### 🔹 Deployment
+- Render (Cloud Hosting)
+
+### 🔹 Optional AI
 - Google Gemini API
 
-Voice Input:
-- Web Speech API
+---
+
+# 🚀 Features
+
+- ML-Based Dish Prediction
+- Decision Tree Classifier Model
+- LabelEncoder-based categorical encoding
+- Restaurant recommendation system
+- Simulated Swiggy vs Zomato pricing comparison
+- Optional AI conversational mode
+- Voice Input (Web Speech API)
+- Modular Flask backend
+- Deterministic & explainable logic
 
 ---
 
-# PART II — IMPLEMENTATION & USAGE
+# 🛠 Implementation
 
----
-
-## 6. Project Structure
-
-```
-MOODBITE/
-│
-├── app.py               # Flask application
-├── train.py             # Model training script
-├── data.csv             # Dataset
-├── model.pkl            # Trained ML model
-├── encoders.pkl         # Encoders for categorical features
-├── requirements.txt     # Dependencies
-│
-├── templates/
-│   ├── index.html       # Landing page
-│   ├── compare.html     # Comparison page
-│   └── result.html      # Final recommendation page
-│
-└── static/
-    └── style.css        # UI styling
-```
-
----
-
-## 7. Installation Guide
-
-### Step 1 — Clone Repository
+## 🔹 Installation
 
 ```bash
 git clone https://github.com/yourusername/MOOD-BITE.git
 cd MOOD-BITE
-```
-
----
-
-### Step 2 — Install Dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
----
-
-### Step 3 — Configure Environment Variables
-
-Create a `.env` file in the root directory:
-
-```
-GEMINI_API_KEY=your_api_key_here
-```
-
-Note:  
-The AI layer is optional. The core ML system functions independently.
-
----
-
-### Step 4 — Train Model (Optional)
+## 🔹 Train Model (Optional)
 
 ```bash
 python train.py
 ```
 
----
-
-### Step 5 — Run Application
+## 🔹 Run Application
 
 ```bash
 python app.py
@@ -219,103 +135,226 @@ http://127.0.0.1:5000
 
 ---
 
-## 8. Screenshots
+
+# 📸 Project Screenshots
 
 ---
 
-### Landing Page
+## 1️⃣ Landing Page – Structured ML Input
 
-<img width="812" height="838" alt="Screenshot 2026-02-14 074738" src="https://github.com/user-attachments/assets/37974f7c-bd1c-478a-bfab-c4c7faaaf10f" />
-<img width="1862" height="867" alt="Screenshot 2026-02-14 074632" src="https://github.com/user-attachments/assets/525781c5-c280-440b-8f0c-f9e9430e0224" />
+<img width="812" height="838" alt="Screenshot 2026-02-14 074738" src="https://github.com/user-attachments/assets/858c3520-5c1c-49f4-8820-8e321559186c" />scription:** 
+<img width="1862" height="867" alt="Screenshot 2026-02-14 074632" src="https://github.com/user-attachments/assets/1a3f3b4d-b481-4dbf-a866-a8b6876b39c6" />
 
-
-Description:  
-Structured input interface for ML-based recommendation.
-
----
-
-### Comparison Page
-
-<img width="1697" height="842" alt="Screenshot 2026-02-14 075346" src="https://github.com/user-attachments/assets/66b2e590-a98b-4ace-9e4e-a056735096be" />
-
-
-Description:  
-Displays recommended dish with simulated pricing comparison.
+User selects taste, budget, meal type, company, and diet.  
+Inputs are encoded and passed to the Decision Tree model.
 
 ---
 
-### Final Recommendation Page
+## 2️⃣ Comparison Page – Price Evaluation
 
-<img width="710" height="613" alt="Screenshot 2026-02-14 075405" src="https://github.com/user-attachments/assets/252a8ad9-fda7-404f-9ae8-3fe7746524a5" />
-
-
-Description:  
-Shows predicted dish and restaurant details.
-
----
-
-### AI Mode Panel
-
-<img width="1406" height="725" alt="Screenshot 2026-02-14 074824" src="https://github.com/user-attachments/assets/42f0d1a9-82af-456a-b682-7a121b3bce11" />
+<img width="1697" height="842" alt="Screenshot 2026-02-14 075346" src="https://github.com/user-attachments/assets/cbf8b421-172f-468f-bc40-8e370d047cb9" />
 
 
-Description:  
-Optional conversational interface for natural language input.
+**Description:**  
+Displays predicted dish, restaurant details, and simulated Swiggy vs Zomato pricing with best option highlighted.
 
 ---
 
-## 9. Dataset Overview
+## 3️⃣ Final Recommendation – ML Output
 
-The dataset includes:
+<img width="710" height="613" alt="Screenshot 2026-02-14 075405" src="https://github.com/user-attachments/assets/d6eaf204-f821-41c6-8eee-3b842f6e4164" />
+
+
+**Description:**  
+Shows deterministic dish prediction with restaurant and base price.
+
+---
+
+## 4️⃣ AI Mode Panel – Optional Insight Layer
+
+<img width="1406" height="725" alt="Screenshot 2026-02-14 074824" src="https://github.com/user-attachments/assets/d53a8636-7ccc-4cdd-8041-aa4d46164a5b" />
+
+**Description:**  
+Free-text and voice-based interaction.  
+Enhances UX without replacing ML logic.
+
+
+## 🏠 Landing Page
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/37974f7c-bd1c-478a-bfab-c4c7faaaf10f" width="80%">
+</p>
+
+Structured user interface for ML-based preference input.
+
+---
+
+## 📊 Comparison Page
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/66b2e590-a98b-4ace-9e4e-a056735096be" width="80%">
+</p>
+
+Displays predicted dish with simulated Swiggy vs Zomato pricing.
+
+---
+
+## 🍽 Final Recommendation Page
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/252a8ad9-fda7-404f-9ae8-3fe7746524a5" width="60%">
+</p>
+
+Shows dish prediction, restaurant details, and pricing.
+
+---
+
+## 🤖 AI Mode Panel
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/42f0d1a9-82af-456a-b682-7a121b3bce11" width="80%">
+</p>
+
+Conversational interface for contextual food suggestions.
+
+---
+
+# 🧩 System Architecture
+
+```
+Frontend (HTML/CSS/JS)
+        ↓
+Flask Backend
+        ↓
+DecisionTreeClassifier (ML Model)
+        ↓
+Dataset Lookup Layer
+        ↓
+Optional AI Insight Layer
+```
+
+### Architecture Principles
+
+- ML-first design
+- AI as enhancement, not replacement
+- Modular Flask routes
+- Clean separation of concerns
+- Deterministic output generation
+
+---
+
+# 🔄 Application Workflow
+
+1. User selects structured preferences  
+2. Input encoded via LabelEncoder  
+3. DecisionTreeClassifier predicts dish  
+4. Dataset lookup retrieves restaurant + price  
+5. Simulated price comparison generated  
+6. Optional AI explanation displayed  
+
+---
+
+# 📡 API Documentation
+
+### Base URL
+```
+https://mood-bite.onrender.com
+```
+
+---
+
+## 🔹 POST /predict
+
+### Description
+Predicts dish based on structured preferences.
+
+### Form Parameters
 
 - taste
 - budget
 - meal_type
 - company
 - diet
+
+### Response
+
 - dish
 - restaurant
 - price
 
-The model predicts `dish` based on encoded categorical inputs.
+---
+
+## 🔹 POST /compare
+
+### Description
+Generates Swiggy vs Zomato price comparison.
+
+### Request
+
+- dish
+- price
+
+### Response
+
+- Swiggy Price
+- Zomato Price
+- Best Platform
 
 ---
 
-## 10. Model Selection Rationale
+# 🎥 Project Demo
 
-DecisionTreeClassifier was selected because:
+### 🌐 Live Site
+https://mood-bite.onrender.com  
 
-- Handles categorical data effectively
-- Requires minimal preprocessing
-- Produces deterministic output
-- Easy to interpret
-- Suitable for small structured datasets
+### 🎬 Demo Video
+(Add YouTube / Drive link here)
 
 ---
 
-## 11. Limitations
+# 🤖 AI Tools Used (Transparency)
 
-- Limited dataset size
-- Simulated delivery pricing
-- No real-time API integration
-- No persistent user history
-- AI usage limited by free-tier API quota
+**Tool Used:** ChatGPT  
+
+**Purpose:**
+- Documentation formatting
+- Backend structure assistance
+- ML architecture refinement
+- Debugging suggestions
+
+**Estimated AI Contribution:** ~30–40%
+
+**Human Contributions:**
+- Architecture design
+- ML model logic
+- Dataset preparation
+- Deployment setup
+- Frontend integration
+- Testing & validation
 
 ---
 
-## 12. Future Enhancements
+# 👥 Team Contributions
 
-- Expanded dataset
-- Real delivery API integration
-- Model performance evaluation metrics
-- User authentication system
-- Recommendation history storage
-- Cloud deployment
+### Nirmal B Chacko
+- ML Model Development
+- Backend Architecture
+- Documentation Lead
+- Deployment Configuration
+- System Design & Planning
+
+### [Teammate Name]
+- Frontend Development
+- UI Styling
+- Integration Testing
+- Feature Implementation
 
 ---
 
-## 13. Conclusion
+# 📜 License
 
-MoodBite demonstrates how a structured ML-based system can be deployed in a web environment and optionally enhanced with a conversational AI layer, while maintaining architectural clarity and deterministic core behavior.
+Licensed under the MIT License.
 
-The project emphasizes modular design, explainable ML logic, and controlled AI usage.
+---
+
+Made with ❤️ at TinkerHub 🚀
