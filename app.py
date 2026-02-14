@@ -7,9 +7,6 @@ import os
 
 app = Flask(__name__)
 
-# ==============================
-# LOAD ENV + GEMINI
-# ==============================
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
@@ -19,37 +16,33 @@ if not api_key:
 
 client = genai.Client(api_key=api_key)
 
-# ==============================
-# LOAD ML MODEL
-# ==============================
 
 model = pickle.load(open("model.pkl", "rb"))
 encoders = pickle.load(open("encoders.pkl", "rb"))
 data = pd.read_csv("data.csv")
 
 
-# ==============================
-# HOME PAGE
-# ==============================
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ==============================
-# ML PREDICTION → COMPARE PAGE
-# ==============================
-
 @app.route("/recommend", methods=["POST"])
 def recommend():
-
     try:
         taste = request.form.get("taste")
         budget = request.form.get("budget")
         meal_type = request.form.get("meal_type")
         company = request.form.get("company")
         diet = request.form.get("diet")
+
+        print("Taste:", taste)
+        print("Budget:", budget)
+        print("Meal Type:", meal_type)
+        print("Company:", company)
+        print("Diet:", diet)
+
 
         # Encode input
         encoded_input = [
@@ -60,14 +53,14 @@ def recommend():
             encoders["diet"].transform([diet])[0]
         ]
 
-        # Predict dish
+        
         prediction = model.predict([encoded_input])[0]
         result_row = data[data["dish"] == prediction].iloc[0]
 
         restaurant = result_row["restaurant"]
         base_price = int(result_row["price"])
 
-        # Simulated delivery comparison
+        
         zomato_price = base_price + 20
         swiggy_price = base_price + 10
 
@@ -81,12 +74,10 @@ def recommend():
         )
 
     except Exception as e:
+        print(e)
         return f"Error in recommendation: {str(e)}"
 
 
-# ==============================
-# FINAL PAGE (After Compare)
-# ==============================
 
 @app.route("/final", methods=["POST"])
 def final():
@@ -95,18 +86,31 @@ def final():
     restaurant = request.form.get("restaurant")
     price = request.form.get("price")
 
+    prompt = f"""
+Explain why {dish} from {restaurant} at price ₹{price} is a good choice for the user. Keep it under 100 words.
+"""
+
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+
+        ai_text = response.text
+
+    except Exception as e:
+        return jsonify({"response": f"AI Error: {str(e)}"})
+
+
     return render_template(
         "result.html",
         dish=dish,
         restaurant=restaurant,
         price=price,
-        ai_response=None
+        ai_response=ai_text
     )
 
 
-# ==============================
-# AI CHATBOT MODE (Landing Page)
-# ==============================
 
 @app.route("/chat_ai", methods=["POST"])
 def chat_ai():
@@ -141,9 +145,6 @@ Keep it under 150 words.
         return jsonify({"response": f"AI Error: {str(e)}"})
 
 
-# ==============================
-# RUN APP
-# ==============================
 
 if __name__ == "__main__":
     app.run(debug=True)
